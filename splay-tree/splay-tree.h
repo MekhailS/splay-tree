@@ -15,7 +15,7 @@ typedef struct KEY {
 typedef struct NODE {
 	KEY key;
 	DATA data;
-	NODE* right_child, * left_child;
+	NODE* rightChild, * leftChild;
 	NODE* parent;
 }NODE;
 
@@ -32,3 +32,7 @@ int Search(SPL_TREE* tree, KEY key);
 int Delete(SPL_TREE* tree, KEY key);
 
 int Insert(SPL_TREE* tree, KEY key, DATA data);
+
+int IsValidTree(SPL_TREE* tree);
+
+int driverStudy();

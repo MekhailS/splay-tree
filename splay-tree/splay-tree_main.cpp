@@ -23,7 +23,7 @@ KEY ConvertStringToKey(char word[]) {
 
 int main()
 {
-	SPL_TREE tree;
+	/*SPL_TREE tree;
 	InitTree(&tree);
 	DATA data = { 0 };
 	int read_flag = 1;
@@ -60,5 +60,6 @@ int main()
 		}
 		else
 			break;
-	}
+	}*/
+	driverStudy();
 }

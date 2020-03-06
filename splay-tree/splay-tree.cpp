@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <string.h>
 
+
 typedef enum SPL_OPERATION {
 	NONE, 
 	ZIG,
@@ -11,9 +12,10 @@ typedef enum SPL_OPERATION {
 	ZIG_ZAG
 }SPL_OPERATION;
 
+
 NODE* GetMaxNode(SPL_TREE* tree);
-void RotateLeft(SPL_TREE* tree, NODE* upper_node);
-void RotateRight(SPL_TREE* tree, NODE* upper_node);
+void RotateLeft(SPL_TREE* tree, NODE* upperNode);
+void RotateRight(SPL_TREE* tree, NODE* upperNode);
 
 int CompareString(char* s1, char* s2);
 int MySign(int x);
@@ -35,7 +37,7 @@ int CompareString(char* s1, char* s2) {
 	if (len_1 == len_2) {
 		for (int i = 0; i < len_1; i++) {
 			if ((int)s1[i] != (int)s2[i]) {
-				return MySign((int)s1[i] == (int)s2[i]);
+				return MySign((int)s1[i] - (int)s2[i]);
 			}
 		}
 	}
@@ -46,14 +48,14 @@ int CompareString(char* s1, char* s2) {
 }
 
 
-SPL_OPERATION DetectOperationCase(SPL_TREE* tree, NODE* target_node) {
-	if (target_node == tree->root)
+SPL_OPERATION DetectOperationCase(SPL_TREE* tree, NODE* targetNode) {
+	if (targetNode == tree->root)
 		return NONE;
-	if (target_node->parent == tree->root)
+	if (targetNode->parent == tree->root)
 		return ZIG;
-	NODE* grandparent = target_node->parent->parent;
-	if (((grandparent->right_child == target_node->parent) && (target_node->parent->right_child == target_node)) || \
-		((grandparent->left_child == target_node->parent) && (target_node->parent->left_child == target_node)))
+	NODE* grandparent = targetNode->parent->parent;
+	if (((grandparent->rightChild == targetNode->parent) && (targetNode->parent->rightChild == targetNode)) || \
+		((grandparent->leftChild == targetNode->parent) && (targetNode->parent->leftChild == targetNode)))
 		return ZIG_ZIG;
 	return ZIG_ZAG;
 }
@@ -64,45 +66,45 @@ void InitTree(SPL_TREE* tree) {
 }
 
 
-void Splay(SPL_TREE* tree, NODE* target_node) {
-	if ((tree->root == NULL) || (target_node == NULL))
+void Splay(SPL_TREE* tree, NODE* targetNode) {
+	if ((tree->root == NULL) || (targetNode == NULL))
 		return;
 	for (;;) {
-		SPL_OPERATION cur_operation = DetectOperationCase(tree, target_node);
+		SPL_OPERATION curOperation = DetectOperationCase(tree, targetNode);
 		NODE* grandparent;
-		switch (cur_operation) {
+		switch (curOperation) {
 			case NONE:
 				return;
 				break;
 
 			case ZIG:
-				if (target_node->parent->left_child == target_node)
-					RotateRight(tree, target_node->parent);
+				if (targetNode->parent->leftChild == targetNode)
+					RotateRight(tree, targetNode->parent);
 				else
-					RotateLeft(tree, target_node->parent);
+					RotateLeft(tree, targetNode->parent);
 				break;
 
 			case ZIG_ZIG:
-				grandparent = target_node->parent->parent;
-				if ((grandparent->right_child == target_node->parent) && (target_node->parent->right_child == target_node)) {
+				grandparent = targetNode->parent->parent;
+				if ((grandparent->rightChild == targetNode->parent) && (targetNode->parent->rightChild == targetNode)) {
 					RotateLeft(tree, grandparent);
-					RotateLeft(tree, target_node->parent);
+					RotateLeft(tree, targetNode->parent);
 				}
 				else {
 					RotateRight(tree, grandparent);
-					RotateRight(tree, target_node->parent);
+					RotateRight(tree, targetNode->parent);
 				}
 				break;
 
 			case ZIG_ZAG:
-				grandparent = target_node->parent->parent;
-				if ((target_node->parent->right_child == target_node) && (grandparent->left_child == target_node->parent)) {
-					RotateLeft(tree, target_node->parent);
-					RotateRight(tree, target_node->parent);
+				grandparent = targetNode->parent->parent;
+				if ((targetNode->parent->rightChild == targetNode) && (grandparent->leftChild == targetNode->parent)) {
+					RotateLeft(tree, targetNode->parent);
+					RotateRight(tree, targetNode->parent);
 				}
 				else {
-					RotateRight(tree, target_node->parent);
-					RotateLeft(tree, target_node->parent);
+					RotateRight(tree, targetNode->parent);
+					RotateLeft(tree, targetNode->parent);
 				}
 				break;
 		}
@@ -111,153 +113,189 @@ void Splay(SPL_TREE* tree, NODE* target_node) {
 
 
 int Search(SPL_TREE* tree, KEY key) {
-	NODE* search_node = tree->root;
-	while (search_node != NULL) {
-		int compare = CompareKey(key, search_node->key);
+	NODE* searchNode = tree->root;
+	while (searchNode != NULL) {
+		int compare = CompareKey(key, searchNode->key);
 		if (compare == 0) {
-			Splay(tree, search_node);
+			Splay(tree, searchNode);
 			return 1;
 		}
-		if (compare > 0)//key > search_node->key
-			search_node = search_node->right_child;
+		if (compare > 0)//key > searchNode->key
+			searchNode = searchNode->rightChild;
 		else
-			search_node = search_node->left_child;
+			searchNode = searchNode->leftChild;
 	}
 	return 0;
 }
 
 
 int Delete(SPL_TREE* tree, KEY key) {
-	NODE* del_node = tree->root;
-	while (del_node != NULL) {
-		int compare = CompareKey(key, del_node->key);
+	NODE* delNode = tree->root;
+	while (delNode != NULL) {
+		int compare = CompareKey(key, delNode->key);
 		if (compare == 0) {
-			Splay(tree, del_node);
+			Splay(tree, delNode);
 			break;
 		}
-		if (compare > 0) // key > del_node->key
-			del_node = del_node->right_child;
+		if (compare > 0) // key > delNode->key
+			delNode = delNode->rightChild;
 		else
-			del_node = del_node->left_child;
+			delNode = delNode->leftChild;
 	}
-	if (del_node == NULL)
+	if (delNode == NULL)
 		return 0;
-	SPL_TREE left_subtree, right_subtree;
-	left_subtree.root = tree->root->left_child;
-	right_subtree.root = tree->root->right_child;
-	if (left_subtree.root == NULL) {
-		tree->root = right_subtree.root;
-		free(del_node->key.string);
-		free(del_node);
+	SPL_TREE leftSubtree, rightSubtree;
+	leftSubtree.root = tree->root->leftChild;
+	rightSubtree.root = tree->root->rightChild;
+	if ((leftSubtree.root == NULL) && (rightSubtree.root == NULL)) {
+		tree->root = NULL;
+		//free(delNode->key.string);
+		//free(delNode);
 		return 1;
 	}
-	if (right_subtree.root == NULL) {
-		tree->root = left_subtree.root;
-		free(del_node->key.string);
-		free(del_node);
+	else if (leftSubtree.root == NULL) {
+		tree->root = rightSubtree.root;
+		tree->root->parent = NULL;
+		//free(delNode->key.string);
+		//free(delNode);
 		return 1;
 	}
-	left_subtree.root->parent = right_subtree.root->parent = NULL;
-	free(del_node->key.string);
-	free(del_node);
-	NODE* max_in_left_subtree = GetMaxNode(&left_subtree);
-	Splay(&left_subtree, max_in_left_subtree);
-	left_subtree.root->right_child = right_subtree.root;
-	tree->root = left_subtree.root;
-	tree->root->right_child = tree->root;
+	else if (rightSubtree.root == NULL) {
+		tree->root = leftSubtree.root;
+		tree->root->parent = NULL;
+		//free(delNode->key.string);
+		//free(delNode);
+		return 1;
+	}
+	leftSubtree.root->parent = rightSubtree.root->parent = NULL;
+	free(delNode->key.string);
+	free(delNode);
+	NODE* maxInLeftSubtree = GetMaxNode(&leftSubtree);
+	Splay(&leftSubtree, maxInLeftSubtree);
+	leftSubtree.root->rightChild = rightSubtree.root;
+	tree->root = leftSubtree.root;
+	tree->root->rightChild->parent = tree->root;
 	return 1;
 }
 
 
 int Insert(SPL_TREE* tree, KEY key, DATA data) {
-	NODE* to_add = (NODE*)malloc(sizeof(NODE));
-	to_add->key = key;
-	to_add->data = data;
-	to_add->left_child = to_add->right_child = to_add->parent = NULL;
-	NODE* upper_node = tree->root;
-	if (upper_node == NULL) {
-		tree->root = to_add;
+	NODE* toAdd = (NODE*)malloc(sizeof(NODE));
+	toAdd->key = key;
+	toAdd->data = data;
+	toAdd->leftChild = toAdd->rightChild = toAdd->parent = NULL;
+	NODE* upperNode = tree->root;
+	if (upperNode == NULL) {
+		tree->root = toAdd;
 		return 1;
 	}
 	for (;;) {
-		int compare = CompareKey(key, upper_node->key);
+		int compare = CompareKey(key, upperNode->key);
 		if (compare == 0) {
-			free(to_add);
+			free(toAdd);
 			return 0;
 		}
-		if (compare > 0) { //key > upper_node->key
-			if (upper_node->right_child == NULL) {
-				upper_node->right_child = to_add;
-				to_add->parent = upper_node;
+		if (compare > 0) { //key > upperNode->key
+			if (upperNode->rightChild == NULL) {
+				upperNode->rightChild = toAdd;
+				toAdd->parent = upperNode;
 				break;
 			}
 			else {
-				upper_node = upper_node->right_child;
+				upperNode = upperNode->rightChild;
 			}
 		}
 		else {
-			if (upper_node->left_child == NULL) {
-				upper_node->left_child = to_add;
-				to_add->parent = upper_node;
+			if (upperNode->leftChild == NULL) {
+				upperNode->leftChild = toAdd;
+				toAdd->parent = upperNode;
 				break;
 			}
 			else {
-				upper_node = upper_node->left_child;
+				upperNode = upperNode->leftChild;
 			}
 		}
 	}
-	Splay(tree, to_add);
+	Splay(tree, toAdd);
 	return(1);
 }
 
 
 NODE* GetMaxNode(SPL_TREE* tree) {
-	NODE* search_node = tree->root;
-	if (search_node == NULL)
+	NODE* searchNode = tree->root;
+	if (searchNode == NULL)
 		return(NULL);
-	while (search_node->right_child != NULL) {
-		search_node = search_node->right_child;
+	while (searchNode->rightChild != NULL) {
+		searchNode = searchNode->rightChild;
 	}
-	return(search_node);
+	return(searchNode);
 }
 
 
-//rotation of verticle incident to upper_node and its right child
-void RotateLeft(SPL_TREE *tree, NODE* upper_node) {
-	NODE* grandparent = upper_node->parent;
+//rotation of verticle incident to upperNode and its right child
+void RotateLeft(SPL_TREE *tree, NODE* upperNode) {
+	NODE* grandparent = upperNode->parent;
 	if (grandparent != NULL)
-		if (grandparent->right_child == upper_node)
-			grandparent->right_child = upper_node->right_child;
+		if (grandparent->rightChild == upperNode)
+			grandparent->rightChild = upperNode->rightChild;
 		else
-			grandparent->left_child = upper_node->right_child;
+			grandparent->leftChild = upperNode->rightChild;
 	else
-		tree->root = upper_node->right_child;
-	NODE* temp = upper_node->right_child->left_child;
-	upper_node->right_child->left_child = upper_node;
-	upper_node->parent = upper_node->right_child;
-	upper_node->right_child->parent = grandparent;
-	upper_node->right_child = temp;
+		tree->root = upperNode->rightChild;
+	NODE* temp = upperNode->rightChild->leftChild;
+	upperNode->rightChild->leftChild = upperNode;
+	upperNode->parent = upperNode->rightChild;
+	upperNode->rightChild->parent = grandparent;
+	upperNode->rightChild = temp;
 	if (temp != NULL)
-		temp->parent = upper_node;
+		temp->parent = upperNode;
 }
 
 
-void RotateRight(SPL_TREE* tree, NODE* upper_node) {
-	NODE* grandparent = upper_node->parent;
+void RotateRight(SPL_TREE* tree, NODE* upperNode) {
+	NODE* grandparent = upperNode->parent;
 	if (grandparent != NULL)
-		if (grandparent->right_child == upper_node)
-			grandparent->right_child = upper_node->left_child;
+		if (grandparent->rightChild == upperNode)
+			grandparent->rightChild = upperNode->leftChild;
 		else
-			grandparent->left_child = upper_node->left_child;
+			grandparent->leftChild = upperNode->leftChild;
 	else
-		tree->root = upper_node->left_child;
-	NODE* temp = upper_node->left_child->right_child;
-	upper_node->left_child->right_child = upper_node;
-	upper_node->parent = upper_node->left_child;
-	upper_node->left_child->parent = grandparent;
-	upper_node->left_child = temp;
+		tree->root = upperNode->leftChild;
+	NODE* temp = upperNode->leftChild->rightChild;
+	upperNode->leftChild->rightChild = upperNode;
+	upperNode->parent = upperNode->leftChild;
+	upperNode->leftChild->parent = grandparent;
+	upperNode->leftChild = temp;
 	if (temp != NULL)
-		temp->parent = upper_node;
+		temp->parent = upperNode;
+}
+
+
+int IsValidNode(NODE* parent, NODE* node) {
+	if (node == NULL)
+		return 1;
+	if (parent == NULL) {
+		if (node->parent != NULL)
+			return 0;
+	}
+	if (parent != NULL) {
+		if (node->parent != parent)
+			return 0;
+	}
+	if (node->leftChild != NULL) {
+		if (CompareKey(node->key, node->leftChild->key) <= 0)
+			return 0;
+	}
+	if (node->rightChild != NULL) {
+		if (CompareKey(node->key, node->rightChild->key) >= 0)
+			return 0;
+	}
+	return (IsValidNode(node, node->leftChild) * IsValidNode(node, node->rightChild));
+}
+
+
+int IsValidTree(SPL_TREE* tree) {
+	return (IsValidNode(NULL, tree->root));
 }
 
 
