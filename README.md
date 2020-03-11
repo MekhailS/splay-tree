@@ -5,7 +5,12 @@
   - Insert
   - Search
   - Delete
-
+  
+### Basic interface:
+  - a <string> insert element <string> to tree
+  - f <string> find element <string> in tree
+  - r <string> remove element <string> from tree
+  
 #### Studying of data structure's operation complexity (relationship between time and number of elements in tree) 
   - main module of studying is .c
   - results is .txt

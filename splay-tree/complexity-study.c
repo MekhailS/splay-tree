@@ -8,8 +8,8 @@
 #include <time.h>
 #include <Windows.h>
 
-#define ELEM_N 10000
-#define STRING_SIZE 5
+#define ELEM_N 100000
+#define STRING_SIZE 8
 #define TIMES_TO_STUDY 1000
 
 
@@ -56,7 +56,7 @@ void mixElementsInArr(KEY* arr) {
 }
 
 
-void PrintAvgStudyArrayToFile(double timeArr[], char filename[]) {
+void PrintAvgStudyArrayToFile(double* timeArr, char filename[]) {
 	FILE* file = fopen(filename, "w");
 	for (int i = 0; i < ELEM_N; i++) {
 		timeArr[i] /= TIMES_TO_STUDY;
@@ -72,9 +72,9 @@ int driverStudy() {
 	data.value = 0;
 	srand(time(NULL));
 	SPL_TREE tree;
-	double timeInsert[ELEM_N] = { 0 };
-	double timeSearch[ELEM_N] = { 0 };
-	double timeDelete[ELEM_N] = { 0 };
+	double* timeInsert = (double*)calloc(sizeof(double), ELEM_N);
+	double* timeSearch = (double*)calloc(sizeof(double), ELEM_N);
+	double* timeDelete = (double*)calloc(sizeof(double), ELEM_N);
 	for (int k = 0; k < TIMES_TO_STUDY; k++) {
 		KEY* arrRandom = generateArrayRandomKeys();
 		InitTree(&tree);
@@ -103,6 +103,7 @@ int driverStudy() {
 			QueryPerformanceCounter((LARGE_INTEGER*)&timeTwo);
 			timeDelete[ELEM_N - 1 - i] += (double)((timeTwo - timeOne) * 1.0 / freq * 1000000);
 		}
+		free(arrRandom);
 	}
 	PrintAvgStudyArrayToFile(timeInsert, (char*)"study_insert_output.txt");
 	PrintAvgStudyArrayToFile(timeSearch, (char*)"study_search_output.txt");
