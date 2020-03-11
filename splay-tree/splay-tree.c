@@ -21,6 +21,30 @@ int CompareString(char* s1, char* s2);
 int MySign(int x);
 
 
+int ConvertCharToInt(char c) {
+	int intChar = (int)c;
+	if ((intChar >= (int)'A') && (intChar <= (int)'Z'))
+		return (intChar - (int)'A');
+	else if ((intChar >= (int)'a') && (intChar <= (int)'z'))
+		return ((int)'Z' - (int)'A' + 1 + intChar - (int)'a');
+	return 0;
+}
+
+
+KEY ConvertStringToKey(char word[]) {
+	KEY key;
+	key.primaryKey = 0;
+	int len = strlen(word);
+	key.string = (char*)malloc(sizeof(char) * len + 1);
+	for (int i = 0; i < len; i++) {
+		key.primaryKey += ConvertCharToInt(word[i]) * (1 << i);
+		key.string[i] = word[i];
+	}
+	key.string[len] = '\0';
+	return(key);
+}
+
+
 int CompareKey(KEY a, KEY b) {
 	if (a.primaryKey == b.primaryKey) {
 		return(CompareString(a.string, b.string));

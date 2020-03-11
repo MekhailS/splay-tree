@@ -7,24 +7,12 @@
 #pragma warning(disable:4996)
 
 
-KEY ConvertStringToKey(char word[]) {
-	KEY key;
-	key.primaryKey = 0;
-	int len = strlen(word);
-	key.string = (char*)malloc(sizeof(char) * len + 1);
-	for (int i = 0; i < len; i++) {
-		key.primaryKey += (int)word[i];
-		key.string[i] = word[i];
-	}
-	key.string[len] = '\0';
-	return(key);
-}
-
-
 int main()
 {
-	/*SPL_TREE tree;
+	/*
+	SPL_TREE tree;
 	InitTree(&tree);
+	HASH_TABLE hashTable;
 	DATA data = { 0 };
 	int read_flag = 1;
 	char word[258];
@@ -60,6 +48,7 @@ int main()
 		}
 		else
 			break;
-	}*/
+	}
+	*/
 	driverStudy();
 }

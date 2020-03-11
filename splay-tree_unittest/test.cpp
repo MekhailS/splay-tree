@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
-#include "..\splay-tree\splay-tree.cpp"
+#include "..\splay-tree\splay-tree.c"
 
 
 NODE* GetEmptyNode(int key) {
     NODE* node = (NODE*)malloc(sizeof(NODE));
-    node->left_child = node->right_child = node->parent = 0;
+    node->leftChild = node->rightChild = node->parent = NULL;
     node->key.primaryKey = key;
     node->key.string = NULL;
     return(node);
@@ -21,15 +21,15 @@ SPL_TREE GetSimpleTreeWSevenNodes() {
     NODE* node_8 = GetEmptyNode(8);
     NODE* node_10 = GetEmptyNode(10);
 
-    node_5->left_child = node_3;
-    node_5->right_child = node_8;
+    node_5->leftChild = node_3;
+    node_5->rightChild = node_8;
 
-    node_3->left_child = node_1;
-    node_3->right_child = node_4;
+    node_3->leftChild = node_1;
+    node_3->rightChild = node_4;
     node_3->parent = node_5;
 
-    node_8->left_child = node_6;
-    node_8->right_child = node_10;
+    node_8->leftChild = node_6;
+    node_8->rightChild = node_10;
     node_8->parent = node_5;
 
     node_1->parent = node_3;
@@ -49,25 +49,25 @@ TEST(RotateLeft, SimpleTree_RotateNode5) {
     SPL_TREE tree = GetSimpleTreeWSevenNodes();
     RotateLeft(&tree, tree.root);
     ASSERT_EQ(8, tree.root->key.primaryKey);
-    ASSERT_EQ(5, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(10, tree.root->right_child->key.primaryKey);
-    ASSERT_EQ(3, tree.root->left_child->left_child->key.primaryKey);
-    ASSERT_EQ(6, tree.root->left_child->right_child->key.primaryKey);
-    ASSERT_EQ(8, tree.root->left_child->parent->key.primaryKey);
-    ASSERT_EQ(5, tree.root->left_child->right_child->parent->key.primaryKey);
+    ASSERT_EQ(5, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(10, tree.root->rightChild->key.primaryKey);
+    ASSERT_EQ(3, tree.root->leftChild->leftChild->key.primaryKey);
+    ASSERT_EQ(6, tree.root->leftChild->rightChild->key.primaryKey);
+    ASSERT_EQ(8, tree.root->leftChild->parent->key.primaryKey);
+    ASSERT_EQ(5, tree.root->leftChild->rightChild->parent->key.primaryKey);
 }
 
 
 TEST(RotateLeft, SimpleTree_RotateNode8) {
     SPL_TREE tree = GetSimpleTreeWSevenNodes();
-    RotateLeft(&tree, tree.root->right_child);
+    RotateLeft(&tree, tree.root->rightChild);
     ASSERT_EQ(5, tree.root->key.primaryKey);
-    ASSERT_EQ(3, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(10, tree.root->right_child->key.primaryKey);
-    ASSERT_EQ(NULL, tree.root->right_child->right_child);
-    ASSERT_EQ(8, tree.root->right_child->left_child->key.primaryKey);
-    ASSERT_EQ(NULL, tree.root->right_child->left_child->right_child);
-    ASSERT_EQ(6, tree.root->right_child->left_child->left_child->key.primaryKey);
+    ASSERT_EQ(3, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(10, tree.root->rightChild->key.primaryKey);
+    ASSERT_EQ(NULL, tree.root->rightChild->rightChild);
+    ASSERT_EQ(8, tree.root->rightChild->leftChild->key.primaryKey);
+    ASSERT_EQ(NULL, tree.root->rightChild->leftChild->rightChild);
+    ASSERT_EQ(6, tree.root->rightChild->leftChild->leftChild->key.primaryKey);
 }
 
 
@@ -75,25 +75,25 @@ TEST(RotateRight, SimpleTree_RotateNode5) {
     SPL_TREE tree = GetSimpleTreeWSevenNodes();
     RotateRight(&tree, tree.root);
     ASSERT_EQ(3, tree.root->key.primaryKey);
-    ASSERT_EQ(5, tree.root->right_child->key.primaryKey);
-    ASSERT_EQ(1, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(4, tree.root->right_child->left_child->key.primaryKey);
-    ASSERT_EQ(8, tree.root->right_child->right_child->key.primaryKey);
-    ASSERT_EQ(3, tree.root->right_child->parent->key.primaryKey);
-    ASSERT_EQ(5, tree.root->right_child->left_child->parent->key.primaryKey);
+    ASSERT_EQ(5, tree.root->rightChild->key.primaryKey);
+    ASSERT_EQ(1, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(4, tree.root->rightChild->leftChild->key.primaryKey);
+    ASSERT_EQ(8, tree.root->rightChild->rightChild->key.primaryKey);
+    ASSERT_EQ(3, tree.root->rightChild->parent->key.primaryKey);
+    ASSERT_EQ(5, tree.root->rightChild->leftChild->parent->key.primaryKey);
 }
 
 
 TEST(RotateRight, SimpleTree_RotateNode3) {
     SPL_TREE tree = GetSimpleTreeWSevenNodes();
-    RotateRight(&tree, tree.root->left_child);
+    RotateRight(&tree, tree.root->leftChild);
     ASSERT_EQ(5, tree.root->key.primaryKey);
-    ASSERT_EQ(8, tree.root->right_child->key.primaryKey);
-    ASSERT_EQ(1, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(3, tree.root->left_child->right_child->key.primaryKey);
-    ASSERT_EQ(NULL, tree.root->left_child->right_child->left_child);
-    ASSERT_EQ(4, tree.root->left_child->right_child->right_child->key.primaryKey);
-    ASSERT_EQ(NULL, tree.root->left_child->left_child);
+    ASSERT_EQ(8, tree.root->rightChild->key.primaryKey);
+    ASSERT_EQ(1, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(3, tree.root->leftChild->rightChild->key.primaryKey);
+    ASSERT_EQ(NULL, tree.root->leftChild->rightChild->leftChild);
+    ASSERT_EQ(4, tree.root->leftChild->rightChild->rightChild->key.primaryKey);
+    ASSERT_EQ(NULL, tree.root->leftChild->leftChild);
 }
 
 
@@ -106,41 +106,41 @@ TEST(DetectOperationCase, DetectNode5_NONE) {
 
 TEST(DetectOperationCase, DetectNode3_ZIG) {
     SPL_TREE tree = GetSimpleTreeWSevenNodes();
-    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->left_child);
+    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->leftChild);
     ASSERT_EQ(ZIG, operation);
 }
 
 
 TEST(DetectOperationCase, DetectNode8_ZIG) {
     SPL_TREE tree = GetSimpleTreeWSevenNodes();
-    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->right_child);
+    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->rightChild);
     ASSERT_EQ(ZIG, operation);
 }
 
 TEST(DetectOperationCase, DetectNode1_ZIG_ZIG) {
     SPL_TREE tree = GetSimpleTreeWSevenNodes();
-    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->left_child->left_child);
+    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->leftChild->leftChild);
     ASSERT_EQ(ZIG_ZIG, operation);
 }
 
 
 TEST(DetectOperationCase, DetectNode10_ZIG_ZIG) {
     SPL_TREE tree = GetSimpleTreeWSevenNodes();
-    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->right_child->right_child);
+    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->rightChild->rightChild);
     ASSERT_EQ(ZIG_ZIG, operation);
 }
 
 
 TEST(DetectOperationCase, DetectNode4_ZIG_ZAG) {
     SPL_TREE tree = GetSimpleTreeWSevenNodes();
-    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->left_child->right_child);
+    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->leftChild->rightChild);
     ASSERT_EQ(ZIG_ZAG, operation);
 }
 
 
 TEST(DetectOperationCase, DetectNode6_ZIG_ZAG) {
     SPL_TREE tree = GetSimpleTreeWSevenNodes();
-    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->right_child->left_child);
+    SPL_OPERATION operation = DetectOperationCase(&tree, tree.root->rightChild->leftChild);
     ASSERT_EQ(ZIG_ZAG, operation);
 }
 
@@ -152,14 +152,14 @@ SPL_TREE GetTreeW11Nodes() {
     NODE* node9 = GetEmptyNode(9);
     NODE* node12 = GetEmptyNode(12);
 
-    NODE* node1 = tree.root->left_child->left_child;
-    NODE* node10 = tree.root->right_child->right_child;
+    NODE* node1 = tree.root->leftChild->leftChild;
+    NODE* node10 = tree.root->rightChild->rightChild;
 
-    node1->left_child = nodeNeg1;
-    node1->right_child = node2;
+    node1->leftChild = nodeNeg1;
+    node1->rightChild = node2;
 
-    node10->left_child = node9;
-    node10->right_child = node12;
+    node10->leftChild = node9;
+    node10->rightChild = node12;
 
     nodeNeg1->parent = node1;
     node2->parent = node1;
@@ -177,99 +177,99 @@ TEST(Splay, SplayFrom5_None) {
     Splay(&tree, node5);
     ASSERT_EQ(NULL, tree.root->parent);
     ASSERT_EQ(node5, tree.root);
-    ASSERT_EQ(3, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(8, tree.root->right_child->key.primaryKey);
+    ASSERT_EQ(3, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(8, tree.root->rightChild->key.primaryKey);
 }
 
 
 TEST(Splay, SplayFrom3_OneZigFromLeft) {
     SPL_TREE tree = GetTreeW11Nodes();
-    NODE* node3 = tree.root->left_child;
+    NODE* node3 = tree.root->leftChild;
     Splay(&tree, node3);
     ASSERT_EQ(NULL, tree.root->parent);
     ASSERT_EQ(node3, tree.root);
-    ASSERT_EQ(1, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(5, tree.root->right_child->key.primaryKey);
-    ASSERT_EQ(4, tree.root->right_child->left_child->key.primaryKey);
-    ASSERT_EQ(8, tree.root->right_child->right_child->key.primaryKey);
+    ASSERT_EQ(1, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(5, tree.root->rightChild->key.primaryKey);
+    ASSERT_EQ(4, tree.root->rightChild->leftChild->key.primaryKey);
+    ASSERT_EQ(8, tree.root->rightChild->rightChild->key.primaryKey);
 }
 
 
 TEST(Splay, SplayFrom8_OneZigFromRight) {
     SPL_TREE tree = GetTreeW11Nodes();
-    NODE* node8 = tree.root->right_child;
+    NODE* node8 = tree.root->rightChild;
     Splay(&tree, node8);
     ASSERT_EQ(NULL, tree.root->parent);
     ASSERT_EQ(node8, tree.root);
-    ASSERT_EQ(5, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(3, tree.root->left_child->left_child->key.primaryKey);
-    ASSERT_EQ(6, tree.root->left_child->right_child->key.primaryKey);
-    ASSERT_EQ(10, tree.root->right_child->key.primaryKey);
+    ASSERT_EQ(5, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(3, tree.root->leftChild->leftChild->key.primaryKey);
+    ASSERT_EQ(6, tree.root->leftChild->rightChild->key.primaryKey);
+    ASSERT_EQ(10, tree.root->rightChild->key.primaryKey);
 }
 
 TEST(Splay, SplayFrom1_OneZigZigFromLeft) {
     SPL_TREE tree = GetTreeW11Nodes();
-    NODE* node1 = tree.root->left_child->left_child;
+    NODE* node1 = tree.root->leftChild->leftChild;
     Splay(&tree, node1);
     ASSERT_EQ(node1, tree.root);
     ASSERT_EQ(NULL, tree.root->parent);
-    ASSERT_EQ(-1, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(3, tree.root->right_child->key.primaryKey);
-    ASSERT_EQ(2, tree.root->right_child->left_child->key.primaryKey);
-    ASSERT_EQ(5, tree.root->right_child->right_child->key.primaryKey);
-    ASSERT_EQ(4, tree.root->right_child->right_child->left_child->key.primaryKey);
-    ASSERT_EQ(8, tree.root->right_child->right_child->right_child->key.primaryKey);
+    ASSERT_EQ(-1, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(3, tree.root->rightChild->key.primaryKey);
+    ASSERT_EQ(2, tree.root->rightChild->leftChild->key.primaryKey);
+    ASSERT_EQ(5, tree.root->rightChild->rightChild->key.primaryKey);
+    ASSERT_EQ(4, tree.root->rightChild->rightChild->leftChild->key.primaryKey);
+    ASSERT_EQ(8, tree.root->rightChild->rightChild->rightChild->key.primaryKey);
 }
 
 
 TEST(Splay, SplayFrom10_OneZigZigFromRight) {
     SPL_TREE tree = GetTreeW11Nodes();
-    NODE* node10 = tree.root->right_child->right_child;
+    NODE* node10 = tree.root->rightChild->rightChild;
     Splay(&tree, node10);
     ASSERT_EQ(node10, tree.root);
     ASSERT_EQ(NULL, tree.root->parent);
-    ASSERT_EQ(12, tree.root->right_child->key.primaryKey);
-    ASSERT_EQ(8, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(9, tree.root->left_child->right_child->key.primaryKey);
-    ASSERT_EQ(5, tree.root->left_child->left_child->key.primaryKey);
-    ASSERT_EQ(6, tree.root->left_child->left_child->right_child->key.primaryKey);
-    ASSERT_EQ(3, tree.root->left_child->left_child->left_child->key.primaryKey);
+    ASSERT_EQ(12, tree.root->rightChild->key.primaryKey);
+    ASSERT_EQ(8, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(9, tree.root->leftChild->rightChild->key.primaryKey);
+    ASSERT_EQ(5, tree.root->leftChild->leftChild->key.primaryKey);
+    ASSERT_EQ(6, tree.root->leftChild->leftChild->rightChild->key.primaryKey);
+    ASSERT_EQ(3, tree.root->leftChild->leftChild->leftChild->key.primaryKey);
 }
 
 
 TEST(Splay, SplayFrom4_OneZigZagFromLeft) {
     SPL_TREE tree = GetTreeW11Nodes();
-    NODE* node4 = tree.root->left_child->right_child;
+    NODE* node4 = tree.root->leftChild->rightChild;
     Splay(&tree, node4);
     ASSERT_EQ(NULL, tree.root->parent);
     ASSERT_EQ(node4, tree.root);
-    ASSERT_EQ(3, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(5, tree.root->right_child->key.primaryKey);
-    ASSERT_EQ(1, tree.root->left_child->left_child->key.primaryKey);
-    ASSERT_EQ(NULL, tree.root->left_child->right_child);
-    ASSERT_EQ(NULL, tree.root->right_child->left_child);
-    ASSERT_EQ(8, tree.root->right_child->right_child->key.primaryKey);
+    ASSERT_EQ(3, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(5, tree.root->rightChild->key.primaryKey);
+    ASSERT_EQ(1, tree.root->leftChild->leftChild->key.primaryKey);
+    ASSERT_EQ(NULL, tree.root->leftChild->rightChild);
+    ASSERT_EQ(NULL, tree.root->rightChild->leftChild);
+    ASSERT_EQ(8, tree.root->rightChild->rightChild->key.primaryKey);
 }
 
 
 TEST(Splay, SplayFrom6_OneZigZagFromRight) {
     SPL_TREE tree = GetTreeW11Nodes();
-    NODE* node6 = tree.root->right_child->left_child;
+    NODE* node6 = tree.root->rightChild->leftChild;
     Splay(&tree, node6);
     ASSERT_EQ(NULL, tree.root->parent);
     ASSERT_EQ(node6, tree.root);
-    ASSERT_EQ(5, tree.root->left_child->key.primaryKey);
-    ASSERT_EQ(8, tree.root->right_child->key.primaryKey);
-    ASSERT_EQ(3, tree.root->left_child->left_child->key.primaryKey);
-    ASSERT_EQ(NULL, tree.root->left_child->right_child);
-    ASSERT_EQ(NULL, tree.root->right_child->left_child);
-    ASSERT_EQ(10, tree.root->right_child->right_child->key.primaryKey);
+    ASSERT_EQ(5, tree.root->leftChild->key.primaryKey);
+    ASSERT_EQ(8, tree.root->rightChild->key.primaryKey);
+    ASSERT_EQ(3, tree.root->leftChild->leftChild->key.primaryKey);
+    ASSERT_EQ(NULL, tree.root->leftChild->rightChild);
+    ASSERT_EQ(NULL, tree.root->rightChild->leftChild);
+    ASSERT_EQ(10, tree.root->rightChild->rightChild->key.primaryKey);
 }
 
 
 TEST(Splay, SplayFrom2_ZigZagAndZig) {
     SPL_TREE tree = GetTreeW11Nodes();
-    NODE* node2 = tree.root->left_child->left_child->right_child;
+    NODE* node2 = tree.root->leftChild->leftChild->rightChild;
     Splay(&tree, node2);
     ASSERT_EQ(NULL, tree.root->parent);
     ASSERT_EQ(node2, tree.root);
@@ -278,7 +278,7 @@ TEST(Splay, SplayFrom2_ZigZagAndZig) {
 
 TEST(Splay, SplayFromNeg1_ZigZagAndZig) {
     SPL_TREE tree = GetTreeW11Nodes();
-    NODE* nodeNeg1 = tree.root->left_child->left_child->left_child;
+    NODE* nodeNeg1 = tree.root->leftChild->leftChild->leftChild;
     Splay(&tree, nodeNeg1);
     ASSERT_EQ(NULL, tree.root->parent);
     ASSERT_EQ(nodeNeg1, tree.root);
@@ -287,7 +287,7 @@ TEST(Splay, SplayFromNeg1_ZigZagAndZig) {
 
 TEST(Splay, SplayFrom9_ZigZagAndZig) {
     SPL_TREE tree = GetTreeW11Nodes();
-    NODE* node9 = tree.root->right_child->right_child->left_child;
+    NODE* node9 = tree.root->rightChild->rightChild->leftChild;
     Splay(&tree, node9);
     ASSERT_EQ(NULL, tree.root->parent);
     ASSERT_EQ(node9, tree.root);
@@ -296,7 +296,7 @@ TEST(Splay, SplayFrom9_ZigZagAndZig) {
 
 TEST(Splay, SplayFrom12_ZigZagAndZig) {
     SPL_TREE tree = GetTreeW11Nodes();
-    NODE* node12 = tree.root->right_child->right_child->right_child;
+    NODE* node12 = tree.root->rightChild->rightChild->rightChild;
     Splay(&tree, node12);
     ASSERT_EQ(NULL, tree.root->parent);
     ASSERT_EQ(node12, tree.root);

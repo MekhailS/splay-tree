@@ -147,9 +147,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="complexity-study.cpp" />
-    <ClCompile Include="splay-tree.cpp" />
-    <ClCompile Include="splay-tree_main.cpp" />
+    <ClCompile Include="complexity-study.c" />
+    <ClCompile Include="splay-tree.c" />
+    <ClCompile Include="splay-tree_main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="splay-tree.h" />
