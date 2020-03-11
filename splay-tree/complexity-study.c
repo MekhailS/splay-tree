@@ -9,7 +9,7 @@
 #include <Windows.h>
 
 #define ELEM_N 10000
-#define STRING_SIZE 10
+#define STRING_SIZE 5
 #define TIMES_TO_STUDY 1000
 
 
