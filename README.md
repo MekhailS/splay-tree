@@ -4,7 +4,7 @@
 #### Supported operations:
   - Insert
   - Search
-  - Revove
+  - Remove
   
 ### Basic interface:
   - a <string> insert element <string> to tree
